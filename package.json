@@ -1,0 +1,9 @@
+{
+  "name": "site_webfun_ia",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "npx vite --port 5173 --open",
+    "preview": "npx http-server -c-1 -p 5173 ."
+  }
+}

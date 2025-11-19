@@ -11,9 +11,22 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Defer Google Fonts CSS: preload + swap to minimize blocking -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"></noscript>
 
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <!-- Performance: preconnect to external asset domains -->
+  <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+  <link rel="preconnect" href="https://images.pexels.com" crossorigin>
+  <link rel="preconnect" href="https://upload.wikimedia.org" crossorigin>
+  <link rel="preconnect" href="https://huggingface.co" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://wa.me" crossorigin>
+
+  <!-- jsDelivr preconnect and deferred icon CSS to avoid render-blocking -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"></noscript>
 
   <style>
     /* --- DESIGN SYSTEM & RESET --- */
@@ -23,7 +36,7 @@
       --secondary-purple: #4338ca;
       --dark-text: #111827;
       --body-text: #374151;
-      --light-text: #6B7280;
+      --light-text: #4B5563;
       --accent-green: #10B981;
       --background: #FFFFFF;
       --light-gray-bg: #F9FAFB;
@@ -47,6 +60,15 @@
 
     html {
       scroll-behavior: smooth;
+    }
+
+    /* Respeitar usuários que preferem menos movimento */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
     }
 
     body {
@@ -76,6 +98,23 @@
       color: var(--dark-text);
     }
 
+    /* Visibilidade de foco forte e consistente */
+    :focus-visible {
+      outline: 2px solid #A78BFA;
+      outline-offset: 3px;
+    }
+    .btn:focus-visible,
+    .nav__link:focus-visible,
+    .service-card__btn:focus-visible,
+    .social__link:focus-visible,
+    .tech-card:focus-visible,
+    .portfolio-card__link:focus-visible,
+    .slider-btn:focus-visible {
+      outline: 2px solid #4338CA;
+      outline-offset: 3px;
+      border-radius: 6px;
+    }
+
     img {
       max-width: 100%;
       height: auto;
@@ -88,11 +127,44 @@
       padding: 0 1.5rem;
     }
 
+    /* Acessibilidade/utilitários */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: #111827;
+      color: #ffffff;
+      padding: 8px 12px;
+      z-index: 10000;
+      border-radius: 0 0 6px 0;
+    }
+    .skip-link:focus {
+      top: 0;
+      outline: 2px solid #A78BFA;
+      outline-offset: 2px;
+    }
+
+    /* Offset de âncora global para evitar o cabeçalho fixo */
+    [id] {
+      scroll-margin-top: -10px;
+    }
+
     /* --- COMPONENTES REUTILIZÁVEIS --- */
     .btn {
       display: inline-block;
       padding: 0.75rem 1.5rem;
-      border-radius: var(--radius-md);
+      border-radius: 50px;
       font-weight: 600;
       font-size: 1rem;
       transition: transform 0.3s, box-shadow 0.3s;
@@ -141,7 +213,7 @@
 
     /* Evita que o cabeçalho fixo cubra o início da seção ao rolar via âncora */
     #contact {
-      scroll-margin-top: var(--header-height);
+      scroll-margin-top: calc(var(--header-height) - 30px);
     }
 
     .section__title {
@@ -351,7 +423,7 @@
       color: var(--primary-blue);
       border: none;
       padding: 12px 20px;
-      border-radius: 6px;
+      border-radius: 50px;
       font-weight: 600;
       cursor: pointer;
       width: 100%;
@@ -657,6 +729,10 @@
       color: var(--primary-blue);
     }
 
+    .solution-card.is-cyan .solution-card__icon-wrapper i {
+      color: #22D3EE;
+    }
+
     .solution-card__title {
       font-size: 1.25rem;
       margin-bottom: 0.75rem;
@@ -799,7 +875,7 @@
 
     .portfolio-card__metric {
       font-weight: 600;
-      color: var(--primary-blue);
+      color: #22D3EE;
     }
 
     .portfolio-card__link {
@@ -907,6 +983,10 @@
     }
 
     /* --- CTA FINAL SECTION --- */
+    .cta-final {
+      padding-top: 0.75rem !important;
+    }
+
     .cta-final__content {
       background-color: var(--light-gray-bg);
       border: 1px solid var(--border-color);
@@ -1017,7 +1097,7 @@
       transform: translateY(-50%);
       width: 36px;
       height: 36px;
-      border-radius: var(--radius-md);
+      border-radius: 50%;
       border: none;
       background-color: var(--primary-blue);
       color: white;
@@ -1043,12 +1123,23 @@
       align-items: center;
       gap: 1rem;
       text-align: center;
+      position: relative;
+    }
+
+    .footer__bottom p:nth-child(2) {
+      position: static;
+      transform: none;
     }
 
     @media screen and (min-width: 768px) {
       .footer__bottom {
         flex-direction: row;
         justify-content: space-between;
+      }
+      .footer__bottom p:nth-child(2) {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
       }
     }
 
@@ -1058,8 +1149,14 @@
     }
 
     .footer__legal {
-      display: flex;
+      display: none;
       gap: 1.5rem;
+    }
+
+    @media screen and (min-width: 768px) {
+      .footer__legal {
+        display: flex;
+      }
     }
 
     .footer__legal a {
@@ -1164,6 +1261,7 @@
       height: 50px;
       width: auto;
       max-width: 120px;
+      aspect-ratio: 3 / 1;
       object-fit: contain;
       margin-bottom: 1rem;
       transition: transform 0.3s ease;
@@ -1176,6 +1274,7 @@
     .tech-card__logo--grande {
       max-width: 140px;
       max-height: 90px;
+      aspect-ratio: 16 / 9;
     }
 
     .tech-card__title {
@@ -1646,17 +1745,27 @@
       }
     }
   </style>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/wf-chatbot.css">
-</head>
+  <!-- Defer local CSS loading using preload+swap to reduce render-blocking -->
+  <link rel="preload" href="css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="css/wf-chatbot.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/wf-chatbot.css">
+  </noscript>
+  <!-- Preload hero image for faster LCP -->
+  <link rel="preload" as="image" href="images/hero-banner.png" fetchpriority="high">
+  <!-- Preload header logo to avoid layout shift in header -->
+  <link rel="preload" as="image" href="images/logo-webfun-ia.png">
 </head>
 
 <body>
+  <!-- Skip link for keyboard users -->
+  <a href="#main" class="skip-link">Pular para o conteúdo principal</a>
   <!-- CABEÇALHO -->
   <header class="header" id="header">
-    <nav class="nav container">
+    <nav class="nav container" aria-label="Navegação principal">
       <a href="#home" class="nav__logo">
-        <img src="images/logo-webfun-ia.png" style="height: 2.8rem;">
+        <img src="images/logo-webfun-ia.png" style="height: 2.8rem;" alt="Webfun.IA" decoding="async">
       </a>
 
       <!-- Menu Desktop -->
@@ -1671,10 +1780,10 @@
       </div>
 
       <div class="nav__actions">
-        <a href="https://wa.me/5547997618824?text=Olá!%20Tenho%20algumas%20dúvidas%20sobre%20os%20serviços%20de%20IA" class="nav__link api-docs" target="_blank" rel="noopener">Dúvidas?</a>
+        <a href="https://wa.me/5547997618824?text=Olá!%20Tenho%20algumas%20dúvidas%20sobre%20os%20serviços%20de%20IA" class="nav__link api-docs" target="_blank" rel="noopener noreferrer">Dúvidas?</a>
         <a href="#contact" class="btn btn--primary">Começar Agora <i class="ri-arrow-right-line"></i></a>
         <!-- Botão Hamburger -->
-        <button class="nav__toggle" id="nav-toggle">
+        <button class="nav__toggle" id="nav-toggle" aria-controls="mobileMenu" aria-expanded="false" aria-label="Abrir menu de navegação">
           <i class="ri-menu-line"></i>
         </button>
       </div>
@@ -1682,14 +1791,14 @@
   </header>
 
   <!-- Menu Mobile Popup -->
-  <div class="mobile-menu-overlay" id="mobileOverlay"></div>
-  <div class="mobile-menu-container" id="mobileMenu">
+  <div class="mobile-menu-overlay" id="mobileOverlay" aria-hidden="true"></div>
+  <div class="mobile-menu-container" id="mobileMenu" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="mobile-menu-header">
       <a href="#home" class="logo">
-        <img src="images/logo-webfun-ia.png" style="height: 2.2rem;">
+        <img src="images/logo-webfun-ia.png" style="height: 2.2rem;" alt="Webfun.IA" loading="lazy" decoding="async">
       </a>
       <!-- Botão Fechar (X) -->
-      <button class="close-menu" id="closeMenu">
+      <button class="close-menu" id="closeMenu" aria-label="Fechar menu de navegação">
         <i class="ri-close-line"></i>
       </button>
     </div>
@@ -1705,11 +1814,11 @@
     <div class="mobile-cta">
       <h3>Precisa de IA no seu negócio?</h3>
       <p>Consultoria gratuita e sem compromisso</p>
-      <a class="mobile-cta-button" href="https://wa.me/5547997618824?text=Olá!%20Quero%20falar%20com%20um%20especialista%20sobre%20IA" target="_blank" rel="noopener">Conversar no WhatsApp</a>
+      <a class="mobile-cta-button" href="https://wa.me/5547997618824?text=Olá!%20Quero%20falar%20com%20um%20especialista%20sobre%20IA" target="_blank" rel="noopener noreferrer">Conversar no WhatsApp</a>
     </div>
   </div>
 
-  <main>
+  <main id="main">
     <!-- HERO SECTION -->
     <section class="hero" id="home">
       <div class="hero__shape hero__shape--1"></div>
@@ -1736,7 +1845,7 @@
           </div>
         </div>
         <div class="hero__image">
-          <img src="images/hero-banner.png" alt="Processador de Inteligência Artificial em uma placa de circuito">
+          <img src="images/hero-banner.png" alt="Processador de Inteligência Artificial em uma placa de circuito" fetchpriority="high" decoding="async">
         </div>
       </div>
       <div class="hero__stats container">
@@ -1767,10 +1876,14 @@
           <p class="section__subtitle">
             Somos especialistas em aplicar Inteligência Artificial de forma simples e eficiente para empreendedores e negócios locais. Nosso foco é transformar tecnologia em resultados reais.
           </p>
-          <a href="https://wa.me/5547997618824?text=Olá!%20Gostaria%20de%20falar%20com%20um%20especialista" class="btn btn--primary" target="_blank" rel="noopener">Fale com nossos especialistas <i class="ri-arrow-right-line"></i></a>
+            <a href="https://wa.me/5547997618824?text=Olá!%20Gostaria%20de%20falar%20com%20um%20especialista" class="btn btn--primary" target="_blank" rel="noopener noreferrer">Fale com nossos especialistas <i class="ri-arrow-right-line"></i></a>
         </div>
         <div class="sobre__image">
-          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80" alt="Equipe de tecnologia colaborando em ambiente moderno">
+            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80" alt="Equipe de tecnologia colaborando em ambiente moderno" loading="lazy" decoding="async" style="aspect-ratio:3/2;"
+                 srcset="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=480&q=80 480w,
+                   https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80 600w,
+                   https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=960&q=80 960w"
+                 sizes="(max-width: 768px) 100vw, 600px">
         </div>
       </div>
 
@@ -1817,7 +1930,7 @@
             </div>
             <h3 class="service-card__title">Previsão de Vendas</h3>
             <p class="service-card__description">Elimine tarefas manuais e repetitivas, otimizando o fluxo de trabalho e liberando sua equipe para atividades estratégicas.</p>
-            <a href="https://wa.me/5547997618824?text=Gostaria%20de%20uma%20proposta%20de%20Previsão%20de%20Vendas" class="btn btn--secondary service-card__btn" target="_blank" rel="noopener">Solicitar Proposta <i class="ri-arrow-right-line"></i></a>
+            <a href="https://wa.me/5547997618824?text=Gostaria%20de%20uma%20proposta%20de%20Previsão%20de%20Vendas" class="btn btn--primary service-card__btn" target="_blank" rel="noopener noreferrer">Solicitar Proposta <i class="ri-arrow-right-line"></i></a>
           </div>
           <div class="service-card is-cyan">
             <div class="service-card__icon-wrapper">
@@ -1825,7 +1938,7 @@
             </div>
             <h3 class="service-card__title">Chatbots de Atendimento</h3>
             <p class="service-card__description">Atendimento 24/7, qualificação de leads e suporte ao cliente com assistentes virtuais humanizados e eficientes.</p>
-            <a href="https://wa.me/5547997618824?text=Quero%20detalhes%20sobre%20Chatbots%20de%20Atendimento" class="btn btn--secondary service-card__btn" target="_blank" rel="noopener">Ver Detalhes <i class="ri-arrow-right-line"></i></a>
+            <a href="https://wa.me/5547997618824?text=Quero%20detalhes%20sobre%20Chatbots%20de%20Atendimento" class="btn btn--primary service-card__btn" target="_blank" rel="noopener noreferrer">Ver Detalhes <i class="ri-arrow-right-line"></i></a>
           </div>
           <div class="service-card">
             <div class="service-card__icon-wrapper">
@@ -1833,7 +1946,7 @@
             </div>
             <h3 class="service-card__title">Automação Processos</h3>
             <p class="service-card__description">Antecipe tendências de mercado, preveja a demanda e tome decisões mais inteligentes baseadas em dados com Big Data & ML.</p>
-            <a href="https://wa.me/5547997618824?text=Quero%20saber%20mais%20sobre%20Automação%20de%20Processos" class="btn btn--secondary service-card__btn" target="_blank" rel="noopener">Saiba Mais <i class="ri-arrow-right-line"></i></a>
+            <a href="https://wa.me/5547997618824?text=Quero%20saber%20mais%20sobre%20Automação%20de%20Processos" class="btn btn--primary service-card__btn" target="_blank" rel="noopener noreferrer">Saiba Mais <i class="ri-arrow-right-line"></i></a>
           </div>
           <div class="service-card">
             <div class="service-card__icon-wrapper">
@@ -1841,7 +1954,7 @@
             </div>
             <h3 class="service-card__title">Campanhas com IA</h3>
             <p class="service-card__description">Aumente a conversão e a lealdade com recomendações de produtos e marketing personalizados para cada cliente.</p>
-            <a href="https://wa.me/5547997618824?text=Quero%20entender%20como%20funcionam%20as%20Campanhas%20com%20IA" class="btn btn--secondary service-card__btn" target="_blank" rel="noopener">Ver Como Funciona <i class="ri-arrow-right-line"></i></a>
+            <a href="https://wa.me/5547997618824?text=Quero%20entender%20como%20funcionam%20as%20Campanhas%20com%20IA" class="btn btn--primary service-card__btn" target="_blank" rel="noopener noreferrer">Ver Como Funciona <i class="ri-arrow-right-line"></i></a>
           </div>
           <div class="service-card is-cyan">
             <div class="service-card__icon-wrapper">
@@ -1849,7 +1962,7 @@
             </div>
             <h3 class="service-card__title">Radar de Reputação</h3>
             <p class="service-card__description">Crie textos, imagens e roteiros em escala, otimizando sua estratégia de conteúdo com o poder da IA generativa.</p>
-            <a href="https://wa.me/5547997618824?text=Preciso%20analisar%20minha%20reputação%20com%20IA" class="btn btn--secondary service-card__btn" target="_blank" rel="noopener">Analisar Meu Negócio <i class="ri-arrow-right-line"></i></a>
+            <a href="https://wa.me/5547997618824?text=Preciso%20analisar%20minha%20reputação%20com%20IA" class="btn btn--primary service-card__btn" target="_blank" rel="noopener noreferrer">Analisar Meu Negócio <i class="ri-arrow-right-line"></i></a>
           </div>
           <div class="service-card">
             <div class="service-card__icon-wrapper">
@@ -1857,7 +1970,7 @@
             </div>
             <h3 class="service-card__title">Relatórios Inteligentes</h3>
             <p class="service-card__description">Proteja seu negócio e seus clientes com algoritmos avançados que identificam atividades suspeitas em tempo real.</p>
-            <a href="https://wa.me/5547997618824?text=Quero%20uma%20demonstração%20de%20Relatórios%20Inteligentes" class="btn btn--secondary service-card__btn" target="_blank" rel="noopener">Solicitar Demonstração <i class="ri-arrow-right-line"></i></a>
+            <a href="https://wa.me/5547997618824?text=Quero%20uma%20demonstração%20de%20Relatórios%20Inteligentes" class="btn btn--primary service-card__btn" target="_blank" rel="noopener noreferrer">Solicitar Demonstração <i class="ri-arrow-right-line"></i></a>
           </div>
         </div>
       </div>
@@ -1979,82 +2092,107 @@
         <div class="portfolio__grid">
           <article class="portfolio-card">
             <div class="portfolio-card__image">
-              <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1170" alt="Dashboard de análise de dados com gráficos">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1170" alt="Dashboard de análise de dados com gráficos" loading="lazy" decoding="async" style="aspect-ratio:16/9;"
+                   srcset="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=480 480w,
+                     https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800 800w,
+                     https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1170 1170w,
+                     https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1600 1600w"
+                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
             </div>
             <div class="portfolio-card__content">
               <h3 class="portfolio-card__title">Plataforma de Análise Preditiva</h3>
               <p class="portfolio-card__description">Sistema SaaS para varejo que prevê tendências de vendas com mais de 95% de acurácia.</p>
               <div class="portfolio-card__footer">
                 <span class="portfolio-card__metric">+400% ROI</span>
-                <a href="https://wa.me/5547997618824?text=Quero%20saber%20mais%20sobre%20a%20Plataforma%20de%20Análise%20Preditiva" class="portfolio-card__link" aria-label="Ver projeto" target="_blank" rel="noopener"><i class="ri-external-link-line"></i></a>
+                <a href="https://wa.me/5547997618824?text=Quero%20saber%20mais%20sobre%20a%20Plataforma%20de%20Análise%20Preditiva" class="portfolio-card__link" aria-label="Ver projeto" target="_blank" rel="noopener noreferrer"><i class="ri-external-link-line" aria-hidden="true"></i></a>
               </div>
             </div>
           </article>
           <article class="portfolio-card">
             <div class="portfolio-card__image">
-              <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=800&q=80" alt="Dashboard de dados IA">
+                    <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=800&q=80" alt="Dashboard de dados IA" loading="lazy" decoding="async" style="aspect-ratio:16/9;"
+                   srcset="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=480&q=80 480w,
+                     https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=800&q=80 800w,
+                     https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1200&q=80 1200w"
+                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
             </div>
             <div class="portfolio-card__content">
               <h3 class="portfolio-card__title">Assistente Virtual Corporativo</h3>
               <p class="portfolio-card__description">Chatbot com NLP avançado que automatizou 80% do suporte interno para uma empresa de tecnologia.</p>
               <div class="portfolio-card__footer">
                 <span class="portfolio-card__metric">+180% Leads Qualificados</span>
-                <a href="https://wa.me/5547997618824?text=Quero%20saber%20mais%20sobre%20o%20Assistente%20Virtual%20Corporativo" class="portfolio-card__link" aria-label="Ver projeto" target="_blank" rel="noopener"><i class="ri-external-link-line"></i></a>
+                <a href="https://wa.me/5547997618824?text=Quero%20saber%20mais%20sobre%20o%20Assistente%20Virtual%20Corporativo" class="portfolio-card__link" aria-label="Ver projeto" target="_blank" rel="noopener noreferrer"><i class="ri-external-link-line" aria-hidden="true"></i></a>
               </div>
             </div>
           </article>
           <article class="portfolio-card">
             <div class="portfolio-card__image">
-              <img src="https://images.pexels.com/photos/1181359/pexels-photo-1181359.jpeg?auto=compress&w=800&q=80" alt="Atendimento virtual com IA">
+                    <img src="https://images.pexels.com/photos/1181359/pexels-photo-1181359.jpeg?auto=compress&w=800&q=80" alt="Atendimento virtual com IA" loading="lazy" decoding="async" style="aspect-ratio:16/9;"
+                   srcset="https://images.pexels.com/photos/1181359/pexels-photo-1181359.jpeg?auto=compress&w=480&q=80 480w,
+                     https://images.pexels.com/photos/1181359/pexels-photo-1181359.jpeg?auto=compress&w=800&q=80 800w,
+                     https://images.pexels.com/photos/1181359/pexels-photo-1181359.jpeg?auto=compress&w=1200&q=80 1200w"
+                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
             </div>
             <div class="portfolio-card__content">
               <h3 class="portfolio-card__title">Sistema de Visão Computacional</h3>
               <p class="portfolio-card__description">Software para indústria 4.0 que detecta falhas em linhas de produção em tempo real, reduzindo perdas.</p>
               <div class="portfolio-card__footer">
                 <span class="portfolio-card__metric">-98% de Defeitos</span>
-                <a href="https://wa.me/5547997618824?text=Quero%20saber%20mais%20sobre%20o%20Sistema%20de%20Visão%20Computacional" class="portfolio-card__link" aria-label="Ver projeto" target="_blank" rel="noopener"><i class="ri-external-link-line"></i></a>
+                <a href="https://wa.me/5547997618824?text=Quero%20saber%20mais%20sobre%20o%20Sistema%20de%20Visão%20Computacional" class="portfolio-card__link" aria-label="Ver projeto" target="_blank" rel="noopener noreferrer"><i class="ri-external-link-line" aria-hidden="true"></i></a>
               </div>
             </div>
           </article>
           <!-- Novo Card 4 -->
           <article class="portfolio-card">
             <div class="portfolio-card__image">
-              <img src="https://images.unsplash.com/photo-1603354350317-6f7aaa5911c5?auto=format&fit=crop&w=800&q=80" alt="Interface de automação inteligente com fluxos de trabalho">
+                    <img src="https://images.unsplash.com/photo-1603354350317-6f7aaa5911c5?auto=format&fit=crop&w=800&q=80" alt="Interface de automação inteligente com fluxos de trabalho" loading="lazy" decoding="async" style="aspect-ratio:16/9;"
+                   srcset="https://images.unsplash.com/photo-1603354350317-6f7aaa5911c5?auto=format&fit=crop&w=480&q=80 480w,
+                     https://images.unsplash.com/photo-1603354350317-6f7aaa5911c5?auto=format&fit=crop&w=800&q=80 800w,
+                     https://images.unsplash.com/photo-1603354350317-6f7aaa5911c5?auto=format&fit=crop&w=1200&q=80 1200w"
+                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
             </div>
             <div class="portfolio-card__content">
               <h3 class="portfolio-card__title">Automação Inteligente de Processos</h3>
               <p class="portfolio-card__description">Orquestração de fluxos com IA reduzindo tempo operacional em setores financeiros e atendimento.</p>
               <div class="portfolio-card__footer">
                 <span class="portfolio-card__metric">-65% Tempo Operacional</span>
-                <a href="https://wa.me/5547997618824?text=Quero%20saber%20mais%20sobre%20Automação%20Inteligente%20de%20Processos" class="portfolio-card__link" aria-label="Ver Automação Inteligente" target="_blank" rel="noopener"><i class="ri-external-link-line"></i></a>
+                <a href="https://wa.me/5547997618824?text=Quero%20saber%20mais%20sobre%20Automação%20Inteligente%20de%20Processos" class="portfolio-card__link" aria-label="Ver Automação Inteligente" target="_blank" rel="noopener noreferrer"><i class="ri-external-link-line" aria-hidden="true"></i></a>
               </div>
             </div>
           </article>
           <!-- Novo Card 5 -->
           <article class="portfolio-card">
             <div class="portfolio-card__image">
-              <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=800&q=80" alt="Dashboard de campanhas de marketing com gráficos de performance">
+                    <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=800&q=80" alt="Dashboard de campanhas de marketing com gráficos de performance" loading="lazy" decoding="async" style="aspect-ratio:16/9;"
+                   srcset="https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=480&q=80 480w,
+                     https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=800&q=80 800w,
+                     https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=1200&q=80 1200w"
+                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
             </div>
             <div class="portfolio-card__content">
               <h3 class="portfolio-card__title">Campanhas de Marketing com IA</h3>
               <p class="portfolio-card__description">Segmentação dinâmica e personalização aumentaram significativamente a taxa de conversão e retenção.</p>
               <div class="portfolio-card__footer">
                 <span class="portfolio-card__metric">+52% Conversões</span>
-                <a href="https://wa.me/5547997618824?text=Quero%20saber%20mais%20sobre%20Campanhas%20de%20Marketing%20com%20IA" class="portfolio-card__link" aria-label="Ver Campanhas com IA" target="_blank" rel="noopener"><i class="ri-external-link-line"></i></a>
+                <a href="https://wa.me/5547997618824?text=Quero%20saber%20mais%20sobre%20Campanhas%20de%20Marketing%20com%20IA" class="portfolio-card__link" aria-label="Ver Campanhas com IA" target="_blank" rel="noopener noreferrer"><i class="ri-external-link-line" aria-hidden="true"></i></a>
               </div>
             </div>
           </article>
           <!-- Novo Card 6 -->
           <article class="portfolio-card">
             <div class="portfolio-card__image">
-              <img src="https://images.unsplash.com/photo-1600269452121-4f2416e55c28?auto=format&fit=crop&w=800&q=80" alt="Painel de relatórios inteligentes com gráficos coloridos">
+                    <img src="https://images.unsplash.com/photo-1600269452121-4f2416e55c28?auto=format&fit=crop&w=800&q=80" alt="Painel de relatórios inteligentes com gráficos coloridos" loading="lazy" decoding="async" style="aspect-ratio:16/9;"
+                   srcset="https://images.unsplash.com/photo-1600269452121-4f2416e55c28?auto=format&fit=crop&w=480&q=80 480w,
+                     https://images.unsplash.com/photo-1600269452121-4f2416e55c28?auto=format&fit=crop&w=800&q=80 800w,
+                     https://images.unsplash.com/photo-1600269452121-4f2416e55c28?auto=format&fit=crop&w=1200&q=80 1200w"
+                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
             </div>
             <div class="portfolio-card__content">
               <h3 class="portfolio-card__title">Relatórios Inteligentes & Insights</h3>
               <p class="portfolio-card__description">Geração automatizada de relatórios estratégicos com KPIs acionáveis para diretoria e operação.</p>
               <div class="portfolio-card__footer">
                 <span class="portfolio-card__metric">+300% Adoção de Dados</span>
-                <a href="https://wa.me/5547997618824?text=Quero%20saber%20mais%20sobre%20Relatórios%20Inteligentes%20e%20Insights" class="portfolio-card__link" aria-label="Ver Relatórios Inteligentes" target="_blank" rel="noopener"><i class="ri-external-link-line"></i></a>
+                <a href="https://wa.me/5547997618824?text=Quero%20saber%20mais%20sobre%20Relatórios%20Inteligentes%20e%20Insights" class="portfolio-card__link" aria-label="Ver Relatórios Inteligentes" target="_blank" rel="noopener noreferrer"><i class="ri-external-link-line" aria-hidden="true"></i></a>
               </div>
             </div>
           </article>
@@ -2077,7 +2215,7 @@
                 A parceria com a Webfun.IA foi um divisor de águas. A automação implementada reduziu nossos custos operacionais em 20% em apenas seis meses e liberou nossa equipe para focar em inovação.
               </p>
               <div class="testimonial-card__author">
-                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200" alt="Foto de João da Silva" class="author__photo">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200" alt="Foto de João da Silva" class="author__photo" loading="lazy" decoding="async" style="aspect-ratio:1/1;object-fit:cover;">
                 <div class="author__info">
                   <h4 class="author__name">João da Silva</h4>
                   <p class="author__title">CEO, Empresa Exemplo</p>
@@ -2089,7 +2227,7 @@
                 A capacidade de análise preditiva da plataforma nos deu uma vantagem competitiva imensa. Conseguimos antecipar tendências de mercado com uma precisão que nunca imaginamos ser possível.
               </p>
               <div class="testimonial-card__author">
-                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200" alt="Foto de Maria Oliveira" class="author__photo">
+                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200" alt="Foto de Maria Oliveira" class="author__photo" loading="lazy" decoding="async" style="aspect-ratio:1/1;object-fit:cover;">
                 <div class="author__info">
                   <h4 class="author__name">Maria Oliveira</h4>
                   <p class="author__title">Diretora de Marketing, Varejo Inovador</p>
@@ -2120,81 +2258,81 @@
 
         <div class="tech-stack__grid">
           <!-- Card 1: OpenAI (ChatGPT) -->
-          <a href="https://openai.com" class="tech-card" target="_blank" rel="noopener">
-            <img src="images/open_ai_logo.png" alt="Logo OpenAI" class="tech-card__logo">
+          <a href="https://openai.com" class="tech-card" target="_blank" rel="noopener noreferrer">
+            <img src="images/open_ai_logo.png" alt="Logo OpenAI" class="tech-card__logo" loading="lazy" decoding="async">
             <h3 class="tech-card__title">OpenAI (GPT-4)</h3>
             <p class="tech-card__category">Linguagem e Geração</p>
           </a>
           <!-- Card 2: Google AI (Gemini) -->
-          <a href="https://ai.google" class="tech-card" target="_blank" rel="noopener">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Logo Google" class="tech-card__logo">
+          <a href="https://ai.google" class="tech-card" target="_blank" rel="noopener noreferrer">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Logo Google" class="tech-card__logo" loading="lazy" decoding="async">
             <h3 class="tech-card__title">Google AI (Gemini)</h3>
             <p class="tech-card__category">Pesquisa e Multimodalidade</p>
           </a>
 
           <!-- Card 3: Meta AI (Llama) -->
-          <a href="https://ai.meta.com" class="tech-card" target="_blank" rel="noopener">
-            <img src="images/llama_ai_logo.png" alt="Logo Llama" class="tech-card__logo">
+          <a href="https://ai.meta.com" class="tech-card" target="_blank" rel="noopener noreferrer">
+            <img src="images/llama_ai_logo.png" alt="Logo Llama" class="tech-card__logo" loading="lazy" decoding="async">
             <h3 class="tech-card__title">Meta AI (Llama)</h3>
             <p class="tech-card__category">Modelos Open Source</p>
           </a>
 
           <!-- Card 4: Anthropic (Claude) -->
-          <a href="https://claude.ai" class="tech-card" target="_blank" rel="noopener">
-            <img src="images/caude_ai_logo.png" alt="Logo Anthropic Claude" class="tech-card__logo">
+          <a href="https://claude.ai" class="tech-card" target="_blank" rel="noopener noreferrer">
+            <img src="images/caude_ai_logo.png" alt="Logo Anthropic Claude" class="tech-card__logo" loading="lazy" decoding="async">
             <h3 class="tech-card__title">Anthropic (Claude)</h3>
             <p class="tech-card__category">Segurança e Ética em IA</p>
           </a>
 
           <!-- Card 5: Midjourney -->
-          <a href="https://midjourney.com" class="tech-card" target="_blank" rel="noopener">
-            <img src="images/midjourney_ai_logo.png" alt="Logo Midjourney" class="tech-card__logo">
+          <a href="https://midjourney.com" class="tech-card" target="_blank" rel="noopener noreferrer">
+            <img src="images/midjourney_ai_logo.png" alt="Logo Midjourney" class="tech-card__logo" loading="lazy" decoding="async">
             <h3 class="tech-card__title">Midjourney</h3>
             <p class="tech-card__category">Geração de Imagens</p>
           </a>
 
           <!-- Card 6: Hugging Face -->
-          <a href="https://huggingface.co" class="tech-card" target="_blank" rel="noopener">
-            <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="Logo Hugging Face" class="tech-card__logo">
+          <a href="https://huggingface.co" class="tech-card" target="_blank" rel="noopener noreferrer">
+            <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="Logo Hugging Face" class="tech-card__logo" loading="lazy" decoding="async">
             <h3 class="tech-card__title">Hugging Face</h3>
             <p class="tech-card__category">Comunidade e Modelos</p>
           </a>
 
           <!-- Card 7: IBM Watson -->
-          <a href="https://www.ibm.com/watson" class="tech-card" target="_blank" rel="noopener">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" alt="Logo IBM" class="tech-card__logo">
+          <a href="https://www.ibm.com/watson" class="tech-card" target="_blank" rel="noopener noreferrer">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" alt="Logo IBM" class="tech-card__logo" loading="lazy" decoding="async">
             <h3 class="tech-card__title">IBM Watson</h3>
             <p class="tech-card__category">IA Empresarial</p>
           </a>
 
           <!-- Card 8: NVIDIA -->
-          <a href="https://www.nvidia.com/ai" class="tech-card" target="_blank" rel="noopener">
-            <img src="images/nvidia_ai_logo.png" alt="Logo NVIDIA AI" class="tech-card__logo">
+          <a href="https://www.nvidia.com/ai" class="tech-card" target="_blank" rel="noopener noreferrer">
+            <img src="images/nvidia_ai_logo.png" alt="Logo NVIDIA AI" class="tech-card__logo" loading="lazy" decoding="async">
             <h3 class="tech-card__title">NVIDIA AI</h3>
             <p class="tech-card__category">Hardware e Computação</p>
           </a>
 
           <!-- Card 9: Perplexity -->
-          <a href="https://perplexity.ai" class="tech-card" target="_blank" rel="noopener">
-            <img src="images/perplexity_ai_logo.png" alt="Logo Perplexity AI" class="tech-card__logo">
+          <a href="https://perplexity.ai" class="tech-card" target="_blank" rel="noopener noreferrer">
+            <img src="images/perplexity_ai_logo.png" alt="Logo Perplexity AI" class="tech-card__logo" loading="lazy" decoding="async">
             <h3 class="tech-card__title">Perplexity AI</h3>
             <p class="tech-card__category">Busca Conversacional</p>
           </a>
           <!-- Card 10: Character.AI -->
-          <a href="https://character.ai" class="tech-card" target="_blank" rel="noopener">
-            <img src="images/character_ai_logo.png" alt="Logo Character AI" class="tech-card__logo">
+          <a href="https://character.ai" class="tech-card" target="_blank" rel="noopener noreferrer">
+            <img src="images/character_ai_logo.png" alt="Logo Character AI" class="tech-card__logo" loading="lazy" decoding="async">
             <h3 class="tech-card__title">Character.AI</h3>
             <p class="tech-card__category">Personagens e Roleplay</p>
           </a>
           <!-- Card 11: Manus.IO -->
-          <a href="https://manus.ai" class="tech-card" target="_blank" rel="noopener">
-            <img src="images/manus-ai.png" alt="Logo Manus AI" class="tech-card__logo--grande">
+          <a href="https://manus.ai" class="tech-card" target="_blank" rel="noopener noreferrer">
+            <img src="images/manus-ai.png" alt="Logo Manus AI" class="tech-card__logo--grande" loading="lazy" decoding="async">
             <h3 class="tech-card__title">Manus AI</h3>
             <p class="tech-card__category">Transcrição e Áudio</p>
           </a>
           <!-- Card 12: Suno AI -->
-          <a href="https://suno.ai" class="tech-card" target="_blank" rel="noopener">
-            <img src="images/suno_ai_logo.png" alt="Logo Suno AI" class="tech-card__logo">
+          <a href="https://suno.ai" class="tech-card" target="_blank" rel="noopener noreferrer">
+            <img src="images/suno_ai_logo.png" alt="Logo Suno AI" class="tech-card__logo" loading="lazy" decoding="async">
             <h3 class="tech-card__title">Suno AI</h3>
             <p class="tech-card__category">Geração de Música</p>
           </a>
@@ -2210,17 +2348,21 @@
           <p class="section__subtitle">
             Nossos especialistas estão prontos para entender seus desafios e desenhar uma solução sob medida. Envie sua mensagem.
           </p>
-          <form id="contact-form" class="contact-form" data-ajax style="max-width:600px;margin:0 auto 1rem auto;display:grid;gap:0.75rem;">
+          <form id="contact-form" class="contact-form" data-ajax aria-describedby="contact-status" style="max-width:600px;margin:0 auto 1rem auto;display:grid;gap:0.75rem;">
             <div style="display:grid;gap:0.5rem;grid-template-columns:1fr;">
-              <input type="text" name="name" placeholder="Seu nome" required style="padding:0.75rem 1rem;border:1px solid var(--border-color);border-radius:var(--radius-md);font-size:1rem;" />
-              <input type="email" name="email" placeholder="Seu e-mail" required style="padding:0.75rem 1rem;border:1px solid var(--border-color);border-radius:var(--radius-md);font-size:1rem;" />
-              <input type="tel" name="phone" placeholder="Seu WhatsApp (opcional)" style="padding:0.75rem 1rem;border:1px solid var(--border-color);border-radius:var(--radius-md);font-size:1rem;" />
-              <textarea name="message" rows="4" placeholder="Conte brevemente sua necessidade" style="padding:0.75rem 1rem;border:1px solid var(--border-color);border-radius:var(--radius-md);font-size:1rem;"></textarea>
+              <label for="name" class="sr-only">Nome</label>
+              <input id="name" type="text" name="name" placeholder="Seu nome" required autocomplete="name" style="padding:0.75rem 1rem;border:1px solid var(--border-color);border-radius:var(--radius-md);font-size:1rem;" />
+              <label for="email" class="sr-only">E-mail</label>
+              <input id="email" type="email" name="email" placeholder="Seu e-mail" required autocomplete="email" style="padding:0.75rem 1rem;border:1px solid var(--border-color);border-radius:var(--radius-md);font-size:1rem;" />
+              <label for="phone" class="sr-only">WhatsApp (opcional)</label>
+              <input id="phone" type="tel" name="phone" placeholder="Seu WhatsApp (opcional)" autocomplete="tel" inputmode="tel" style="padding:0.75rem 1rem;border:1px solid var(--border-color);border-radius:var(--radius-md);font-size:1rem;" />
+              <label for="message" class="sr-only">Mensagem</label>
+              <textarea id="message" name="message" rows="4" placeholder="Conte brevemente sua necessidade" style="padding:0.75rem 1rem;border:1px solid var(--border-color);border-radius:var(--radius-md);font-size:1rem;"></textarea>
             </div>
             <button type="submit" class="btn btn--primary btn--large" style="justify-self:start;">
               Enviar mensagem <i class="ri-arrow-right-line"></i>
             </button>
-            <p id="contact-status" style="margin-top:0.5rem;color:var(--light-text);"></p>
+            <p id="contact-status" aria-live="polite" aria-atomic="true" style="margin-top:0.5rem;color:var(--light-text);"></p>
           </form>
 
 
@@ -2236,13 +2378,13 @@
       <div class="footer__grid">
         <div class="footer__brand">
           <a href="#home">
-            <img src="images/logo-webfun-ia.png" style="height: 2.2rem;">
+            <img src="images/logo-webfun-ia.png" alt="Webfun.IA" style="height: 2.2rem;" loading="lazy" decoding="async">
           </a>
           <p class="footer__description">Revolucionando o futuro através da inteligência artificial ética e inovadora.</p>
           <div class="footer__socials">
-            <a href="#" class="social__link"><i class="ri-linkedin-box-fill"></i></a>
-            <a href="#" class="social__link"><i class="ri-twitter-fill"></i></a>
-            <a href="#" class="social__link"><i class="ri-youtube-fill"></i></a>
+            <a href="#" class="social__link" aria-label="LinkedIn da Webfun.IA"><i class="ri-linkedin-box-fill" aria-hidden="true"></i></a>
+            <a href="#" class="social__link" aria-label="Twitter da Webfun.IA"><i class="ri-twitter-fill" aria-hidden="true"></i></a>
+            <a href="#" class="social__link" aria-label="YouTube da Webfun.IA"><i class="ri-youtube-fill" aria-hidden="true"></i></a>
           </div>
         </div>
         <div class="footer__links">
@@ -2263,17 +2405,17 @@
             <li><a href="#contact">Contato</a></li>
           </ul>
         </div>
-        <div class="footer__subscribe">
-          <h3 class="footer__title">Mantenha-se Atualizado</h3>
-          <p class="footer__description">Receba as últimas novidades sobre IA e inovação.</p>
-          <form class="newsletter-form">
-            <input type="email" placeholder="Seu e-mail" required>
-            <button type="submit" aria-label="Inscrever-se"><i class="ri-send-plane-fill"></i></button>
-          </form>
+        <div class="footer__links">
+          <h3 class="footer__title">Contato</h3>
+          <ul>
+            <li><a href="mailto:contato@webfun.com.br"><i class="ri-mail-line"></i> contato@webfun.com.br</a></li>
+            <li><a href="tel:+5547997618824"><i class="ri-phone-line"></i> +55 (47) 99761-8824</a></li>
+          </ul>
         </div>
       </div>
       <div class="footer__bottom">
         <p class="footer__copy">&copy; 2025 Webfun.IA. Todos os direitos reservados.</p>
+        <p class="footer__copy">Feito com <i class="ri-heart-fill" style="color: #ef4444;"></i> no interior do <span style="font-size: 1.2em;">🇧🇷</span></p>
         <div class="footer__legal">
           <a href="#">Política de Privacidade</a>
           <a href="#">Termos de Uso</a>
@@ -2283,23 +2425,22 @@
   </footer>
 
   <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/lucide@latest" defer></script>
 
   <!-- WhatsApp Floating Button -->
-  <a href="https://wa.me/5547997618824?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20conversar%20sobre%20IA" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Conversar no WhatsApp">
+  <a href="https://wa.me/5547997618824?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20conversar%20sobre%20IA" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Conversar no WhatsApp">
     <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.488" />
     </svg>
   </a>
 
   <script>
-    // Render Lucide icons
-    if (window.lucide && typeof window.lucide.createIcons === 'function') {
-      try { window.lucide.createIcons(); } catch (e) { }
-    }
-
-    // Menu Mobile
+    // Menu & Init
     document.addEventListener('DOMContentLoaded', function () {
+      // Render Lucide icons after DOM is ready
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        try { window.lucide.createIcons(); } catch (e) { }
+      }
       const navToggle = document.getElementById('nav-toggle');
       const mobileMenu = document.getElementById('mobileMenu');
       const mobileOverlay = document.getElementById('mobileOverlay');
@@ -2308,30 +2449,33 @@
       navToggle.addEventListener('click', function () {
         mobileMenu.classList.add('active');
         mobileOverlay.classList.add('active');
+        mobileMenu.setAttribute('aria-hidden', 'false');
+        navToggle.setAttribute('aria-expanded', 'true');
         document.body.style.overflow = 'hidden';
+        const firstLink = mobileMenu.querySelector('a, button');
+        if (firstLink && typeof firstLink.focus === 'function') {
+          firstLink.focus();
+        }
       });
 
       function closeMobileMenu() {
         mobileMenu.classList.remove('active');
         mobileOverlay.classList.remove('active');
+        mobileMenu.setAttribute('aria-hidden', 'true');
+        navToggle.setAttribute('aria-expanded', 'false');
         document.body.style.overflow = '';
+        navToggle.focus();
       }
 
       closeMenu.addEventListener('click', closeMobileMenu);
       mobileOverlay.addEventListener('click', closeMobileMenu);
 
-      // Smooth scroll para links internos
+      // Smooth scroll via CSS; apenas fecha o menu ao clicar em âncoras
       document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-          e.preventDefault();
-          const target = document.querySelector(this.getAttribute('href'));
-          if (target) {
-            target.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start'
-            });
-            closeMobileMenu();
-          }
+        anchor.addEventListener('click', function () {
+          const href = this.getAttribute('href');
+          if (!href || href === '#') return;
+          closeMobileMenu();
         });
       });
 
@@ -2359,6 +2503,22 @@
         if (currentSlide < totalSlides - 1) {
           currentSlide++;
           updateSlider();
+        }
+      });
+
+      // Teclas de navegação do slider (setas esquerda/direita)
+      sliderTrack.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowLeft') {
+          prevSlide.click();
+        } else if (e.key === 'ArrowRight') {
+          nextSlide.click();
+        }
+      });
+
+      // Fechar menu com tecla Escape
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+          closeMobileMenu();
         }
       });
 
@@ -2455,7 +2615,7 @@
 
   <!-- HTML do Chatbot Novo - Webfun.IA -->
 
-  <script src="js/wf-chatbot.js"></script>
+  <script src="js/wf-chatbot.js" defer></script>
 
 </body>
 

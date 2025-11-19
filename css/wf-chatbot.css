@@ -3,8 +3,8 @@
 /* Tema atualizado: uso de cor sólida ao invés de gradiente */
 
 :root {
-    --wf-primary: #4338CA; /* cor principal atual */
-    --wf-primary-hover: #3730A3; /* ~15% mais escura para hover */
+    --wf-primary: #7C3AED; /* roxo primário (btn) */
+    --wf-primary-hover: #8B5CF6; /* roxo hover (btn hover) */
     --wf-primary-light: #EEF2FF; /* tom claro para superfícies / bolhas */
 }
 
@@ -53,7 +53,7 @@
     background: #25D366;
     color: #fff !important;
     padding: 8px 14px;
-    border-radius: 20px;
+    border-radius: 50px;
     font-size: 0.85rem;
     font-weight: 600;
     text-decoration: none;
@@ -221,7 +221,7 @@
 .wf-option {
     background-color: white;
     border: 2px solid #e6e9f0;
-    border-radius: 12px;
+    border-radius: 50px;
     padding: 12px 15px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -271,7 +271,7 @@
     flex: 1;
     padding: 12px 15px;
     border: 1px solid #e6e9f0;
-    border-radius: 25px;
+    border-radius: 50px;
     outline: none;
     font-size: 0.95rem;
     font-family: inherit;
@@ -285,7 +285,7 @@
     background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
     color: white;
     border: none;
-    border-radius: 25px;
+    border-radius: 50px;
     padding: 12px 20px;
     cursor: pointer;
     font-weight: 600;
