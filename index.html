@@ -2584,7 +2584,7 @@
           statusEl.style.color = 'var(--light-text)';
           try {
             console.log('Enviando dados:', payload);
-            const res = await fetch('http://127.0.0.1:8000/api/leads/', {
+            const res = await fetch('https://webfun-backend.onrender.com/api/leads/', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(payload)
