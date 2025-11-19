@@ -16,8 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.http import JsonResponse
 
 urlpatterns = [
+    # Health / root endpoints (Render health check expects 200 OK)
+    path('', lambda request: JsonResponse({'status': 'ok'})),
+    path('health/', lambda request: JsonResponse({'status': 'ok'})),
     path('admin/', admin.site.urls),
     path('api/', include('leads.urls')),
 ]
